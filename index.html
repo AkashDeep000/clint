@@ -1,0 +1,80 @@
+<label for="p">You would like to borrow</label>
+<input type="number" name="p" id="p" value="" />
+<label for="r">Inerest Rate</label>
+<input type="number" name="r" id="r" value="" />
+<label for="t">Loan term (years)</label>
+<input type="number" name="t" id="t" value="" />
+<label for="n">Repayment frequency</label>
+<select id="n">
+  <option value="1">Monthly</option>
+  <option value="2">Fortnightly</option>
+  <option value="3">Weekly</option>
+
+</select>
+<br>
+<br>
+<button id="btn">Calculate</button>
+<h3 id="installment"></h3>
+<h4 id="total"></h4>
+<h4 id="interest"></h4>
+
+<script>
+
+
+  const p = document.querySelector('#p');
+  const r = document.querySelector('#r');
+  const t = document.querySelector('#t');
+  const nEl = document.querySelector('#n');
+  let n = 12;
+  nEl.onchange = () => {
+    if (nEl.selectedIndex === 0) {
+      n = 12
+    }
+    if (nEl.selectedIndex === 1) {
+      n = 24
+    }
+    if (nEl.selectedIndex === 2) {
+      n = 48
+    }
+  }
+  const pay = (p, r, t, n) => {
+    const pay = p * (r/n) * Math.pow((1+ (r/n)), n*t) / (Math.pow((1+ (r/n)), n*t) - 1)
+    return pay
+  }
+
+
+  //console.log(pay(10000,.02,30,12))
+  const btn = document.querySelector('#btn');
+
+  btn.onclick = (event) => {
+    //  event.preventDefault();
+    // show the selected index
+    const paym = pay(p.value, r.value / 100, t.value, n);
+    //  alert(n)
+
+    document.querySelector('#installment').innerHTML = "Your monthly repayments: " + paym;
+    document.querySelector('#total').innerHTML = "Total repayments: " + (paym * n * t.value);
+    document.querySelector('#interest').innerHTML = "Total interest: " + ((paym * n * t.value) - p.value);
+
+
+  };
+
+
+</script>
+
+<style type="text/css" media="all">
+  input {
+    display: block;
+    margin: .7rem 1rem;
+    padding: .5rem 1rem;
+  }
+
+  label {
+    padding: 1rem 0 0 0;
+  }
+  button {
+    padding: .3er;
+    margin: .5rem;
+    font-size: 1.2rem;
+  }
+</style>
